@@ -1,25 +1,22 @@
 import main from '@act/main'
-import value from '@act/main/processes/value'
-import { get, post } from '@act/main/signals/sources/xhr'
-import { when, equals } from 'ramda/src/compose'
+import naiveSerialize from '@act/main/processes/naiveSerialize'
+import { post } from '../act/packages/main/signals/sources/xhr'
 
-const login = (_, history) => {
+const login = (payload, history) => {
   history.push({ type: 'loading' })
 
-  post('http://localhost:3000/rpc/login', model.inputs)(
+  post('http://localhost:3000/rpc/login', payload)(
     ({ items }) => history.push({ type: 'success', payload: items }),
     (msg) => history.push({ type: 'loginFailed', payload: msg })
   )
 }
 
 const view = (model) => (
-  ['main', [
-    ['h1', ['User Signup ']],
-    ['label', {for: 'email'}, ['Email']],
-    ['input#email', {change: {email: value}}],
-    ['label', {for: 'password'}, ['Password']],
-    ['input#password', {change: {pass: value}}],
-    ['button', {click: login}, ['Login']],
+  ['form', {submit: [login, naiveSerialize]}, [
+    ['h1', 'User Signup '],
+    ['label', ['Email', ['input', {name: 'email'}]]],
+    ['label', ['Password', ['input', {type: 'password', name: 'password'}]]],
+    ['button', 'Login'],
     model.loading
       ? ['div', 'Loading...']
       : [],
@@ -29,11 +26,7 @@ const view = (model) => (
 
 const model = {
   error: '',
-  loading: false,
-  inputs: {
-    email: '',
-    pass: ''
-  }
+  loading: false
 }
 
 const reducer = (state, {type, payload}) => {
@@ -44,10 +37,6 @@ const reducer = (state, {type, payload}) => {
       return { ...state, error: '', loading: true }
     case 'loginFailed':
       return { ...state, error: payload, loading: false }
-    case 'email':
-      return { ...state, inputs: { ...state.inputs, email: payload } }
-    case 'pass':
-      return { ...state, inputs: { ...state.inputs, pass: payload } }
     default:
       console.log(type, ': ', payload, ' -> ', state)
       return state
