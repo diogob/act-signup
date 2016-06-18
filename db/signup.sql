@@ -1,4 +1,7 @@
-CREATE extension IF NOT EXISTS pgcrypto;
+CREATE DATABASE signup;
+\c signup
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- We put things inside the auth schema to hide
 -- them from public view. Certain public procs/views will
@@ -84,3 +87,8 @@ BEGIN
   RETURN result;
 END;
 $$;
+
+CREATE USER postgrest PASSWORD 'development_password' NOINHERIT;
+CREATE ROLE anonymous;
+GRANT anonymous TO postgrest;
+GRANT EXECUTE ON FUNCTION public.login(text, text) TO anonymous;

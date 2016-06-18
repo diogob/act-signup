@@ -1,10 +1,11 @@
 {
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "postgrest": "postgrest postgres://postgrest:development_password@localhost:5432/signup -s public -j hahaha -a anonymous"
   },
   "dependencies": {
-    "@act/main": "0.0.8"
+    "@act/main": "file:../act/packages/main"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",

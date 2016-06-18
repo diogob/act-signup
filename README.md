@@ -9,16 +9,19 @@ npm start
 
 ## Back end:
 
-On psql:
-
+First make sure you have the postgrest binaries, on a Mac you can use:
 ```
-create database DB;
-\c DB
-\i signup.sql
+brew install postgrest
+```
+
+Assuming that you can connect as superuser to a local PostgreSQL server using psql 
+without any parameters:
+```
+psql < db/signup.sql
 ```
 
 Then:
 
 ```
-postgrest postgres://USER:PASS@localhost:5432/DB --schema public -j "hahaha" -a USER
+npm run postgrest
 ```
