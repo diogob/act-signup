@@ -72,7 +72,9 @@ DROP TYPE IF EXISTS auth.jwt_claims CASCADE;
 CREATE TYPE auth.jwt_claims AS (role text, email text);
 
 CREATE OR REPLACE FUNCTION
-public.login(email text, pass text) RETURNS auth.jwt_claims
+public.login(email text, pass text)
+RETURNS auth.jwt_claims
+SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
 DECLARE
