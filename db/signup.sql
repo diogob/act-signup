@@ -71,26 +71,70 @@ $$;
 DROP TYPE IF EXISTS auth.jwt_claims CASCADE;
 CREATE TYPE auth.jwt_claims AS (role text, email text);
 
-CREATE OR REPLACE FUNCTION
-public.login(email text, pass text)
+CREATE FUNCTION auth.is_owner_or_admin(role text)
+RETURNS boolean
+LANGUAGE SQL
+STABLE
+AS $$
+  SELECT current_setting('postgrest.claims.email') = role OR current_user = 'admin'
+$$;
+
+-- Public API
+CREATE OR REPLACE FUNCTION public.login(email text, pass text)
 RETURNS auth.jwt_claims
 SECURITY DEFINER
 LANGUAGE plpgsql
 AS $$
-DECLARE
-_role name;
-result auth.jwt_claims;
+  DECLARE
+    _role name;
+    result auth.jwt_claims;
+  BEGIN
+    SELECT auth.user_role(email, pass) INTO _role;
+    IF _role IS NULL THEN
+      RAISE invalid_password USING message = 'invalid user or password';
+    END IF;
+    SELECT _role AS role, login.email AS email INTO result;
+    RETURN result;
+  END;
+$$;
+
+CREATE OR REPLACE VIEW public.users AS
+SELECT
+  email,
+  '***'::text as pass,
+  role,
+  verified
+FROM
+  auth.users
+WHERE
+  auth.is_owner_or_admin(role);
+
+CREATE OR REPLACE FUNCTION auth.insert_users()
+RETURNS TRIGGER
+SECURITY DEFINER
+LANGUAGE plpgsql
+AS $$
 BEGIN
-  SELECT auth.user_role(email, pass) INTO _role;
-  IF _role IS NULL THEN
-    RAISE invalid_password USING message = 'invalid user or password';
-  END IF;
-  SELECT _role AS role, login.email AS email INTO result;
-  RETURN result;
+  INSERT INTO auth.users (email, pass, role)
+  VALUES (NEW.email, NEW.pass, 'webuser');
+  RETURN NEW;
 END;
 $$;
 
+CREATE TRIGGER insert_users INSTEAD OF INSERT
+ON public.users
+FOR EACH ROW
+EXECUTE PROCEDURE auth.insert_users();
+
+
+-- Roles and privileges
 CREATE USER postgrest PASSWORD 'development_password' NOINHERIT;
 CREATE ROLE anonymous;
-GRANT anonymous TO postgrest;
+CREATE ROLE webuser;
+CREATE ROLE admin;
+GRANT anonymous, webuser, admin TO postgrest;
 GRANT EXECUTE ON FUNCTION public.login(text, text) TO anonymous;
+GRANT INSERT, SELECT ON public.users TO anonymous;
+
+-- Default claims
+ALTER DATABASE signup SET postgrest.claims.email = '';
