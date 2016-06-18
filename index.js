@@ -15,12 +15,12 @@ const view = (model) => (
   ['form', {submit: [login, naiveSerialize]}, [
     ['h1', 'User Signup '],
     ['label', ['Email', ['input', {name: 'email'}]]],
-    ['label', ['Password', ['input', {type: 'password', name: 'password'}]]],
+    ['label', ['Password', ['input', {type: 'password', name: 'pass'}]]],
     ['button', 'Login'],
     model.loading
       ? ['div', 'Loading...']
       : [],
-    model.error && ['div', {style: 'background: red padding: 10px'}, model.error]
+    model.error && ['span.label.error', model.error]
   ]]
 )
 
