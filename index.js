@@ -20,16 +20,18 @@ const signup = (payload, history) => {
   )
 }
 
-const form = (fn, title) => (
+const form = (fn, action) => (
   ['form', {submit: [fn, naiveSerialize]}, [
     ['article.card', [
       ['header', [
-        ['h3', title]
+        ['h3', `User ${action}`]
       ]],
       ['footer', [
         ['label', ['Email', ['input', {name: 'email'}]]],
         ['label', ['Password', ['input', {type: 'password', name: 'pass'}]]],
-        ['button', {style: {margin: '15px 0 0 0'}}, 'Login']
+        ['button', {style: {margin: '15px 0 0 0'}}, action],
+        ['a', {href: '#', click: 'signup'}, 'go to signup'],
+        ['a', {href: '#', click: 'login'}, 'go to login']
       ]]
     ]]
   ]]
@@ -38,7 +40,9 @@ const form = (fn, title) => (
 const view = (model) => (
   ['div.flex.center.one.demo', [
     ['div', [
-      form(login, 'User Login')
+      model.action === 'login'
+        ? form(login, 'login')
+        : form(signup, 'signup')
     ]],
     model.loading
       ? ['div', 'Loading...']
@@ -49,11 +53,16 @@ const view = (model) => (
 
 const model = {
   error: '',
-  loading: false
+  loading: false,
+  action: 'login'
 }
 
 const reducer = (state, {type, payload}) => {
   switch (type) {
+    case 'login':
+      return { ...state, action: 'login' }
+    case 'signup':
+      return { ...state, action: 'signup' }
     case 'success':
       return { ...state, error: '', loading: false }
     case 'loading':
