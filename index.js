@@ -12,15 +12,25 @@ const login = (payload, history) => {
 }
 
 const view = (model) => (
-  ['form', {submit: [login, naiveSerialize]}, [
-    ['h1', 'User Signup '],
-    ['label', ['Email', ['input', {name: 'email'}]]],
-    ['label', ['Password', ['input', {type: 'password', name: 'pass'}]]],
-    ['button', 'Login'],
-    model.loading
-      ? ['div', 'Loading...']
-      : [],
-    model.error && ['span.label.error', model.error]
+  ['div.flex.center.two.demo', [
+    ['div', [
+      ['form', {submit: [login, naiveSerialize]}, [
+        ['article.card', [
+          ['header', [
+            ['h3', 'User Login ']
+          ]],
+          ['footer', [
+            ['label', ['Email', ['input', {name: 'email'}]]],
+            ['label', ['Password', ['input', {type: 'password', name: 'pass'}]]],
+            ['button', {style: {margin: '15px 0 0 0'}}, 'Login'],
+            model.loading
+              ? ['div', 'Loading...']
+              : [],
+            model.error && ['span.label.error', model.error]
+          ]]
+        ]]
+      ]]
+    ]]
   ]]
 )
 
