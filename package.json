@@ -1,8 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server",
-    "backend": "postgrest-ws postgres://postgrest:development_password@localhost:5432/signup -s public -j hahaha -a anonymous"
+    "start": "webpack-dev-server"
   },
   "dependencies": {
     "@act/main": "file:../act/packages/main"
