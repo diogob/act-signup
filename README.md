@@ -21,5 +21,5 @@ psql < db/signup.sql
 Then:
 
 ```
-npm run postgrest
+npm run backend
 ```
