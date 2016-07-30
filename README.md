@@ -3,7 +3,6 @@
 ## Requirements
 
  * Node.js and npm
- * Ruby and foreman
  * PostgreSQL 9.4+
  * stack (only if you need to compile the backend binaries)
 
@@ -30,16 +29,16 @@ psql < db/signup.sql
 npm install
 ```
 
-### Foreman to run everything
+### Node Foreman to run everything
 
 ```
-gem install foreman
+npm install -g foreman
 ```
 
 ## Running
 
 ```
-foreman start
+nf start
 ```
 
 To change the database connection options use the .env file to change the DB_URL variable.
