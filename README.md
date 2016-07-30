@@ -15,6 +15,21 @@ There are no pre-built binaries for Mac, so you have to install from the
 [posgrest-ws repo](https://github.com/diogob/postgrest-ws) and
 [act-recorder repo](https://github.com/diogob/act-recorder).
 
+Inside each project source repo run the command:
+```
+stack install
+```
+
+If the above command fail for the lack of a haskell compiler try running `stack setup` before.
+
+After the installation the binaries will be placed in `$HOME/.local/bin/`.
+To run this binaries you will need to add this directory to your path,
+add to your `.bashrc`:
+
+```
+export PATH=$HOME/.local/bin/:$PATH
+```
+
 ### Database schema
 
 Assuming that you can connect as superuser to a local PostgreSQL server using psql 
