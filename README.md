@@ -44,16 +44,10 @@ psql < db/signup.sql
 npm install
 ```
 
-### Node Foreman to run everything
-
-```
-npm install -g foreman
-```
-
 ## Running
 
 ```
-nf start
+npm start
 ```
 
 To change the database connection options use the .env file to change the DB_URL variable.
