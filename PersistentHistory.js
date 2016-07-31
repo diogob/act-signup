@@ -11,7 +11,7 @@ export default class PersistentHistory extends History {
     this.timeline = []
     this.present = 0
     this.initialState = this.state
-    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFubmVsIjoiY2hhdCIsIm1vZGUiOiJydyJ9._w1IGqgRfLM6epJwy6wBWOZOeSILEpJozR64qVuFgpU'
+    const jwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFubmVsIjoiZnJvbnRlbmQiLCJtb2RlIjoidyJ9.DmjQr6Fm_n8soeW9ixTQQUAGBMsBFqJrM--3un3LoTs'
     const uri = `ws://${window.location.hostname}:3000/${jwt}`
     this.ws = new window.WebSocket(uri)
   }
