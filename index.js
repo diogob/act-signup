@@ -1,7 +1,7 @@
 import main from '@act/main'
 import naiveSerialize from '@act/main/processes/naiveSerialize'
 import { post } from '../act/packages/main/signals/sources/xhr'
-import PersistentHistory from './PersistentHistory'
+import historyClass from './PersistentHistory'
 
 const login = (payload, history) => {
   history.push({ type: 'loading' })
@@ -78,4 +78,4 @@ const reducer = (state, {type, payload}) => {
   }
 }
 
-main(view, {model, reducer, historyClass: PersistentHistory})
+main(view, { model, reducer, historyClass })
