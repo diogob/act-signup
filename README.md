@@ -10,10 +10,10 @@
 
 ### Backend binaries
 
-First make sure you have the postgrest-ws and act-recorder binaries.
+First make sure you have the postgrest-ws and pg-recorder binaries.
 There are no pre-built binaries for Mac, so you have to install from the 
 [posgrest-ws repo](https://github.com/diogob/postgrest-ws) and
-[act-recorder repo](https://github.com/diogob/act-recorder).
+[pg-recorder repo](https://github.com/diogob/pg-recorder).
 
 Inside each project source repo run the command:
 ```
